@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarjeta Carnicería La Milagrosa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #1a1a1a; }
+        .btn-red { background: linear-gradient(145deg, #b91c1c, #7f1a1a); transition: all 0.3s ease; }
+        .btn-red:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(185, 28, 28, 0.4); }
+        .btn-whatsapp { background: #25D366; transition: all 0.3s ease; }
+        .btn-whatsapp:hover { background: #128C7E; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(37, 211, 102, 0.4); }
+        .gold-text { color: #e6b422; }
+        .btn-gold { background: #e6b422; color: #2d0000; transition: all 0.2s; }
+        .btn-gold:hover { background: #ffcc33; transform: scale(1.02); }
+        .menu-tab { background: #2a2a2a; color: #ccc; transition: 0.2s; cursor: pointer; }
+        .menu-tab.active { background: #b91c1c; color: white; border-bottom: 3px solid #e6b422; }
+        .precio { color: #e6b422; font-weight: 800; }
+        .precio-2x { background: #e6b422; color: #2d0000; padding: 2px 8px; border-radius: 20px; font-weight: 800; }
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center;
+            z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.2s ease, visibility 0.2s ease;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-content {
+            background: #111; border-radius: 28px; max-width: 90%; width: 500px;
+            max-height: 85vh; display: flex; flex-direction: column;
+            transform: scale(0.95); transition: all 0.3s ease;
+            border: 2px solid #e6b422; box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-header { background: #8b0000; padding: 1.2rem; border-radius: 26px 26px 0 0; position: relative; }
+        .modal-close {
+            position: absolute; top: 12px; right: 16px; background: #2d0000; color: #e6b422;
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center;
+            justify-content: center; cursor: pointer; font-size: 20px;
+        }
+        .modal-close:hover { background: #e6b422; color: #2d0000; transform: rotate(90deg); transition: 0.2s; }
+        
+        /* Botón flotante de WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            background: #25D366;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37,211,102,0.7); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(37,211,102,0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37,211,102,0); }
+        }
+        .whatsapp-float:hover { transform: scale(1.1); background: #128C7E; }
+    </style>
+</head>
+<body>
+
+    <div class="min-h-screen flex items-center justify-center p-3">
+        <div class="w-full max-w-sm bg-[#0f0f0f] rounded-3xl overflow-hidden shadow-2xl border border-red-900 flex flex-col justify-between">
+            
+            <div class="flex-grow">
+                <!-- Banner superior -->
+                <div class="relative h-44 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1602470520998-f4a52199a3d6?q=80&w=1887&auto=format');">
+                    <div class="absolute inset-0 bg-black/60"></div>
+                    <div class="absolute bottom-3 left-0 right-0 text-center">
+                        <span class="bg-red-800 text-white px-4 py-1 rounded-full text-sm font-bold inline-flex items-center gap-2">
+                            <i class="fas fa-fire"></i> NUEVA ADMINISTRACIÓN
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Logo -->
+                <div class="flex justify-center -mt-10 relative z-10">
+                    <div class="bg-[#0f0f0f] p-2 rounded-full border-4 border-red-700">
+                        <div class="w-20 h-20 rounded-full bg-red-800 flex items-center justify-center shadow-lg">
+                            <i class="fas fa-drumstick-bite text-4xl text-yellow-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center px-4 pt-2 pb-2">
+                    <h1 class="text-3xl font-black text-white tracking-wide">CARNICERÍA</h1>
+                    <p class="text-yellow-500 textxl font-bold">La Milagrosa</p>
+                    <p class="text-gray-400 text-sm mt-1"><i class="fas fa-truck"></i> DOMICILIO GRATIS | Sector Bombillo Rojo</p>
+                    <p class="text-red-500 text-xs font-semibold mt-1">📅 Promo: 15 al 23 de Mayo</p>
+                </div>
+
+                <!-- Botones principales -->
+                <div class="px-5 space-y-3 mt-2">
+                    <a href="tel:+573242895038" class="btn-red flex items-center justify-center gap-3 w-full py-3 rounded-xl text-white font-bold text-lg">
+                        <i class="fas fa-phone-alt"></i> Llamar Ahora
+                    </a>
+                    <a href="https://wa.me/573242895038" target="_blank" class="bg-green-700 hover:bg-green-800 flex items-center justify-center gap-3 w-full py-3 rounded-xl text-white font-bold text-lg transition">
+                        <i class="fab fa-whatsapp"></i> WhatsApp
+                    </a>
+                    <a href="https://maps.google.com/?q=Bombillo+Rojo,+Colombia" target="_blank" class="bg-gray-800 hover:bg-gray-700 flex items-center justify-center gap-3 w-full py-3 rounded-xl text-white font-bold text-lg transition">
+                        <i class="fas fa-map-marker-alt"></i> Ver Ubicación
+                    </a>
+                </div>
+
+                <!-- Menú de cortes -->
+                <div class="px-5 mt-6">
+                    <div class="flex rounded-lg overflow-hidden border border-red-800">
+                        <button id="tab-cerdo" class="menu-tab active flex-1 py-3 font-bold text-center">🐷 CERDO</button>
+                        <button id="tab-res" class="menu-tab flex-1 py-3 font-bold text-center">🐄 RES</button>
+                    </div>
+
+                    <div id="lista-cerdo" class="bg-[#1a1a1a] rounded-lg mt-2 p-3 max-h-80 overflow-y-auto">
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Pierna pulpa</span><span class="precio">$8.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Pierna económica</span><span class="precio">$7.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Cañón</span><span class="precio">$10.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Costilla</span><span class="precio">$10.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Barriquero</span><span class="precio">$10.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Papada</span><span class="precio">$8.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Pezuña (3x)</span><span class="precio">$12.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Osobuco (3x)</span><span class="precio">$16.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Espinazo (3x)</span><span class="precio">$12.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Asadura (3x)</span><span class="precio">$6.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Garra (3x)</span><span class="precio">$6.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Chuleta ahumada</span><span class="precio">$15.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Careta</span><span class="precio">$6.000</span></div>
+                            <div class="flex justify-between"><span class="text-white">Chorizo</span><span class="precio">$1.000</span></div>
+                        </div>
+                    </div>
+
+                    <div id="lista-res" class="bg-[#1a1a1a] rounded-lg mt-2 p-3 max-h-80 overflow-y-auto hidden">
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Tabla</span><span class="precio">$18.000 <span class="precio-2x ml-2">2x $34.000</span></span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Posta</span><span class="precio">$18.000 <span class="precio-2x ml-2">2x $34.000</span></span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Paletero</span><span class="precio">$16.500</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Cáscara</span><span class="precio">$16.500</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Morillo</span><span class="precio">$16.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Pecho</span><span class="precio">$15.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Tres Telas</span><span class="precio">$13.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Lagarto</span><span class="precio">$14.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Solomo Extranjero</span><span class="precio">$18.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Chata</span><span class="precio">$21.500</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Solomito</span><span class="precio">$22.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Costilla de Res</span><span class="precio">$10.000</span></div>
+                            <div class="flex justify-between border-b border-gray-800 pb-1"><span class="text-white">Mondongo</span><span class="precio">$10.500</span></div>
+                            <div class="flex justify-between"><span class="text-white">Punta de Anca</span><span class="precio">$21.500</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones secundarios -->
+                <div class="px-5 py-5 flex gap-3">
+                    <button id="btn-ver-menu" class="flex-1 bg-red-900 hover:bg-red-800 text-white py-2 rounded-xl text-sm font-bold transition"><i class="fas fa-utensils mr-2"></i>Menú completo</button>
+                    <button id="btn-agendar" class="flex-1 bg-yellow-600 hover:bg-yellow-500 text-black py-2 rounded-xl text-sm font-bold transition"><i class="fas fa-calendar-alt mr-2"></i>Agendar pedido</button>
+                </div>
+
+                <!-- Guardar Contacto -->
+                <div class="px-5 pb-3">
+                    <button id="btn-guardar-contacto" class="w-full btn-gold py-3 rounded-xl font-bold text-black flex items-center justify-center gap-2 transition">
+                        <i class="fas fa-address-card"></i> Guardar Contacto
+                    </button>
+                </div>
+
+                <div class="text-center pb-4">
+                    <button id="btn-instalar" class="text-gray-500 text-xs hover:text-yellow-500 transition">📲 ¿Cómo instalar esta tarjeta?</button>
+                </div>
+            </div>
+
+            <!-- SELLO OFICIAL DE MARCA MANDATORIO V2.0 -->
+            <div class="text-center text-[8px] tracking-wider text-stone-500 font-medium bg-[#080808] py-2 uppercase border-t border-red-950 w-full">
+                Creado por <a href="https://konfiozinc.github.io/" target="_blank" class="text-yellow-500 font-semibold">KONFÍO ZINC</a> — Todos los derechos reservados
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+    <a href="https://wa.me/573242895038" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp text-3xl text-white"></i>
+    </a>
+
+    <!-- MODALES -->
+    <div id="modal-menu" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-white font-bold text-xl text-center">🥩 Cortes completos</h2>
+                <div class="modal-close" id="close-menu-modal">✕</div>
+            </div>
+            <div class="p-4 overflow-y-auto text-white" style="max-height: 60vh;">
+                <h3 class="text-red-500 font-bold text-lg mb-2">🐷 CERDO</h3>
+                <div class="grid grid-cols-2 gap-2 text-sm border-b border-gray-700 pb-3 mb-3">
+                    <span>Pierna pulpa $8.000</span> <span>Pierna económica $7.000</span>
+                    <span>Cañón $10.000</span> <span>Costilla $10.000</span>
+                    <span>Barriquero $10.000</span> <span>Papada $8.000</span>
+                    <span>Pezuña (3x) $12.000</span> <span>Osobuco (3x) $16.000</span>
+                    <span>Espinazo (3x) $12.000</span> <span>Asadura (3x) $6.000</span>
+                    <span>Garra (3x) $6.000</span> <span>Chuleta ahumada $15.000</span>
+                    <span>Careta $6.000</span> <span>Chorizo $1.000</span>
+                </div>
+                <h3 class="text-red-500 font-bold text-lg mb-2">🐄 RES</h3>
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <span>Tabla $18.000 (2x $34.000)</span> <span>Posta $18.000 (2x $34.000)</span>
+                    <span>Paletero $16.500</span> <span>Cáscara $16.500</span>
+                    <span>Morillo $16.000</span> <span>Pecho $15.000</span>
+                    <span>Tres Telas $13.000</span> <span>Lagarto $14.000</span>
+                    <span>Solomo Extranjero $18.000</span> <span>Chata $21.500</span>
+                    <span>Solomito $22.000</span> <span>Costilla de Res $10.000</span>
+                    <span>Mondongo $10.500</span> <span>Punta de Anca $21.500</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-agendar" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-white font-bold text-xl text-center">📅 Agendar pedido</h2>
+                <div class="modal-close" id="close-agendar-modal">✕</div>
+            </div>
+            <div class="p-5 text-white">
+                <p class="text-center text-gray-300 mb-4">Escríbenos por WhatsApp para coordinar tu pedido</p>
+                <a href="https://wa.me/573242895038?text=Hola%2C%20quisiera%20hacer%20un%20pedido" target="_blank" class="btn-whatsapp flex justify-center items-center gap-3 py-3 rounded-xl font-bold text-white text-lg">
+                    <i class="fab fa-whatsapp text-2xl"></i> Enviar mensaje
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-instalar" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="text-white font-bold text-xl text-center">📱 Instalar en tu móvil</h2>
+                <div class="modal-close" id="close-instalar-modal">✕</div>
+            </div>
+            <div class="p-5 text-white text-sm">
+                <div class="mb-4 p-3 bg-gray-800 rounded-xl">
+                    <p class="font-bold text-yellow-400"><i class="fab fa-apple"></i> iPhone (Safari)</p>
+                    <ol class="list-decimal list-inside mt-1 text-gray-300">
+                        <li>Toca <i class="fas fa-share-square"></i> Compartir</li>
+                        <li>Selecciona "Añadir a pantalla de inicio"</li>
+                        <li>Confirmar</li>
+                    </ol>
+                </div>
+                <div class="p-3 bg-gray-800 rounded-xl">
+                    <p class="font-bold text-yellow-400"><i class="fab fa-android"></i> Android (Chrome)</p>
+                    <ol class="list-decimal list-inside mt-1 text-gray-300">
+                        <li>Toca ⋮ (tres puntos)</li>
+                        <li>Selecciona "Instalar aplicación"</li>
+                        <li>Confirmar</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tabs
+        const tabCerdo = document.getElementById('tab-cerdo');
+        const tabRes = document.getElementById('tab-res');
+        const listaCerdo = document.getElementById('lista-cerdo');
+        const listaRes = document.getElementById('lista-res');
+
+        tabCerdo.addEventListener('click', () => {
+            tabCerdo.classList.add('active'); tabRes.classList.remove('active');
+            listaCerdo.classList.remove('hidden'); listaRes.classList.add('hidden');
+        });
+        tabRes.addEventListener('click', () => {
+            tabRes.classList.add('active'); tabCerdo.classList.remove('active');
+            listaRes.classList.remove('hidden'); listaCerdo.classList.add('hidden');
+        });
+
+        // Modales
+        const modalMenu = document.getElementById('modal-menu');
+        const modalAgendar = document.getElementById('modal-agendar');
+        const modalInstalar = document.getElementById('modal-instalar');
+
+        const openModal = (modal) => { modal.classList.add('active'); };
+        const closeModal = (modal) => { modal.classList.remove('active'); };
+
+        document.getElementById('btn-ver-menu').onclick = () => openModal(modalMenu);
+        document.getElementById('btn-agendar').onclick = () => openModal(modalAgendar);
+        document.getElementById('btn-instalar').onclick = () => openModal(modalInstalar);
+
+        document.getElementById('close-menu-modal').onclick = () => closeModal(modalMenu);
+        document.getElementById('close-agendar-modal').onclick = () => closeModal(modalAgendar);
+        document.getElementById('close-instalar-modal').onclick = () => closeModal(modalInstalar);
+
+        window.onclick = (e) => {
+            if (e.target === modalMenu) closeModal(modalMenu);
+            if (e.target === modalAgendar) closeModal(modalAgendar);
+            if (e.target === modalInstalar) closeModal(modalInstalar);
+        };
+
+        // Guardar Contacto (vCard)
+        const btnGuardar = document.getElementById('btn-guardar-contacto');
+        function generarVCard() {
+            const vCardLines = [
+                "BEGIN:VCARD",
+                "VERSION:3.0",
+                "FN:CARNICERÍA La Milagrosa",
+                "ORG:Carnicería La Milagrosa",
+                "TEL;TYPE=WORK,VOICE:+573242895038",
+                "TEL;TYPE=CELL,VOICE:+573242895038",
+                "URL:https://wa.me/573242895038",
+                "ADR;TYPE=WORK:;;Sector Bombillo Rojo;Colombia;;",
+                "NOTE:Promociones del 15 al 23 de Mayo - Domicilio gratis",
+                "END:VCARD"
+            ];
+            const vCardData = vCardLines.join("\n");
+            const blob = new Blob([vCardData], { type: "text/vcard;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "Carniceria_La_Milagrosa.vcf";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+        btnGuardar.addEventListener("click", (e) => {
+            e.preventDefault();
+            generarVCard();
+        });
+    </script>
+</body>
+</html>
